@@ -28,6 +28,21 @@ void DataBaseFunctions::WriteToBin(ios_base::openmode type)
 	fout.close();
 }
 //writes to file player.dat in binary only if file already exists
+//writes in the position in txtfile specified by filepos para e.g if filepos was 5 itd write the 5th line in txt file and we feed in the array pos		
+void DataBaseFunctions::WriteToBinOnceEdit(int FilePos, int arrayPos)
+{
+	fstream fout;
+	fout.open("player.dat", ios::out | ios::_Nocreate | ios::binary);
+	if (fout.good())
+	{
+		fout.seekp(sizeof(Player) * FilePos, ios::beg);
+		fout.write((char*)&players[arrayPos], sizeof(Player));
+		cout << "file written" << endl;
+	}
+	fout.close();
+}
+
+//writes to file player.dat in binary only if file already exists
 //writes in the position in txtfile specified by filepos para e.g if filepos was 5 itd write the 5th line in txt file		
 void DataBaseFunctions::WriteToBinOnce(int FilePos)
 {
@@ -41,7 +56,6 @@ void DataBaseFunctions::WriteToBinOnce(int FilePos)
 	}
 	fout.close();
 }
-
 //reads data from player.dat txtfile. places data read in txt file into players[] dynamic array 
 void DataBaseFunctions::LoadSavedData()
 {
@@ -67,7 +81,6 @@ void DataBaseFunctions::AddData()
 	char name[10];
 	char highScore[10];
 	bool isNumber = false;
-
 
 
 	cout << "enter players name you would like to add must have more then 3 chars and less then 10" << endl;
@@ -106,10 +119,12 @@ void DataBaseFunctions::AddData()
 	Player newPlayer;		//create a variabel to store values inside of
 	strcpy_s(newPlayer.playerName, name);		//copy name user inputted inside of the variable
 	strcpy_s(newPlayer.highScore, highScore);	//copy highscore user inputted inside of the variable
+	newPlayer.id = size -1;
+	//newPlayer.id = size;
 	players[size - 1] = newPlayer;		//put variable inside of players array. size - 1 because a array starts at element 0 
+	//BubbleSort();
+	//WriteToBin(ios::out);
 	WriteToBinOnce(size - 1);			//write to txt file only writing this value that has changed and not whole array
-
-
 }
 
 //Edit a value inside of players[] array and changes its values to new ones
@@ -122,7 +137,6 @@ void DataBaseFunctions::EditData()
 
 	cout << "type name youd like to edit" << endl;
 	cin >> playerChoice;
-
 
 	int result = BinarySearch(players, 0, size - 1, playerChoice);		//using binary search to find where in array the user input is located 
 	if (result != -1)		//if found a match do following
@@ -162,9 +176,11 @@ void DataBaseFunctions::EditData()
 		Player newPlayer;							//copy name user inputted inside of the variable
 		strcpy_s(newPlayer.playerName, name);		//copy name user inputted inside of the variable
 		strcpy_s(newPlayer.highScore, highScore);	//copy highscore user inputted inside of the variable
+		newPlayer.id = players[result].id;
+		
+		players[result] = newPlayer;				//put variable inside of players array. result being the binary search result		
 
-		players[result] = newPlayer;				//put variable inside of players array. result being the binary search result
-		WriteToBinOnce(result);						//write to txt file only writing this value that has changed and not whole array
+		WriteToBinOnceEdit(players[result].id, result);					//write to txt file only writing this value that has changed and not whole array
 	}
 	else
 	{

@@ -16,6 +16,7 @@ public:
 	~DataBaseFunctions();
 
 	void WriteToBin(ios_base::openmode type);
+	void WriteToBinOnceEdit(int FilePos, int arrayPos);
 	void WriteToBinOnce(int FilePos);
 	//void LoadBin();
 

@@ -12,15 +12,19 @@ int main()
 	//adding variables inside of a static array called player
 	strcpy_s(player[0].playerName, "justin");
 	strcpy_s(player[0].highScore, "10000");
+	player[0].id = 0;
 
 	strcpy_s(player[1].playerName, "igor");
 	strcpy_s(player[1].highScore, "5000");
+	player[1].id = 1;
 
 	strcpy_s(player[2].playerName, "jay");
 	strcpy_s(player[2].highScore, "20000");
+	player[2].id = 2;
 
 	strcpy_s(player[3].playerName, "len");
 	strcpy_s(player[3].highScore, "80000");
+	player[3].id = 3;
 
 	//creating instance of databaseFunctions
 	DataBaseFunctions databaseFunctions;
@@ -36,7 +40,7 @@ int main()
 		{
 			databaseFunctions.players[i] = player[i];
 		}
-		databaseFunctions.BubbleSort();
+		//databaseFunctions.BubbleSort();
 		databaseFunctions.WriteToBin(ios::out);
 	}
 	//get the value of size and load all saved data into players array
@@ -64,7 +68,7 @@ int main()
 			databaseFunctions.BubbleSort();
 			for (int i = 0; i < databaseFunctions.size; i++)
 			{
-				cout << "Player name: " << databaseFunctions.players[i].playerName << "		" << "HighScore: " << databaseFunctions.players[i].highScore << endl;
+				cout << "ID - " << databaseFunctions.players[i].id << "		" <<  "Player name: " << databaseFunctions.players[i].playerName << "		" << "HighScore: " << databaseFunctions.players[i].highScore << endl;
 			}
 			system("pause");
 			system("cls");
@@ -118,8 +122,8 @@ int main()
 		{
 			cout << "incorrect input" << endl;
 			//clears buffer
-			std::cin.clear();
-			std::cin.ignore(std::cin.rdbuf()->in_avail());
+			cin.clear();
+			cin.ignore(cin.rdbuf()->in_avail());
 			break;
 		}
 
